@@ -7,9 +7,11 @@ A tool that helps tailor resumes to specific job descriptions using AI.
 1. Clone the repository
 2. Install dependencies: `npm install`
 3. Create a `.env.local` file with your OpenAI API key:
-   ```
+
+   ```env
    OPENAI_API_KEY=your_key_here
    ```
+
 4. Run the development server: `npm run dev`
 
 ## Features
