@@ -5,7 +5,11 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-export function BarChart({ data }) {
+interface ChartData {
+  [key: string]: number;
+}
+
+export function BarChart({ data }: { data: ChartData }) {
   const chartData = {
     labels: Object.keys(data),
     datasets: [

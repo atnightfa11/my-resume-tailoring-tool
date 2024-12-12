@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, ChangeEvent } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -11,7 +11,11 @@ import { Progress } from "@/components/ui/progress"
 import { Upload, FileText, Briefcase, Eye, Moon, Sun } from 'lucide-react'
 import { Switch } from "@/components/ui/switch"
 import { BarChart } from './bar-chart'
-import { highlightKeywords } from '../utils/keyword-highlighter'
+import { highlightKeywords } from '@/app/utils/keyword-highlighter'
+
+interface KeywordMatches {
+  [key: string]: number;
+}
 
 export function ResumeTailoringTool() {
   const [step, setStep] = useState(1)
@@ -20,7 +24,7 @@ export function ResumeTailoringTool() {
   const [jobDescription, setJobDescription] = useState('')
   const [resume, setResume] = useState('')
   const [tailoredResume, setTailoredResume] = useState('')
-  const [keywordMatches, setKeywordMatches] = useState({})
+  const [keywordMatches, setKeywordMatches] = useState<KeywordMatches>({})
 
   useEffect(() => {
     if (isDarkMode) {
@@ -36,7 +40,7 @@ export function ResumeTailoringTool() {
       // Simulate AI processing
       setTimeout(() => {
         setMatchPercentage(85)
-        setTailoredResume(highlightKeywords(resume, jobDescription))
+        setTailoredResume(highlightKeywords(resume, jobDescription.split(' ')))
         setKeywordMatches({
           'Technical Skills': 90,
           'Work Experience': 80,
@@ -51,12 +55,15 @@ export function ResumeTailoringTool() {
     setStep(prevStep => Math.max(prevStep - 1, 1))
   }
 
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0]
+  const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
     if (file) {
       const reader = new FileReader()
       reader.onload = (e) => {
-        setResume(e.target.result)
+        const result = e.target?.result
+        if (typeof result === 'string') {
+          setResume(result)
+        }
       }
       reader.readAsText(file)
     }

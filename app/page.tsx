@@ -1,4 +1,4 @@
-import { ResumeTailoringTool } from './components/resume-tailoring-tool'
+import { ResumeTailoringTool } from '@/components/resume-tailoring-tool'
 
 export default function Home() {
   return (
